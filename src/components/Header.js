@@ -1,9 +1,10 @@
-import logo from '../assets/logo.png'; // Stelle sicher, dass du ein Logo-Bild im Ordner src/assets/ hast
+import Nav from './Nav';
 
 function Header() {
   return (
-    <header className="header">
-      <img src={logo} alt="Little Lemon Logo" className="logo" />
+    <header>
+      <img src="/logo.png" alt="Little Lemon Logo" className="logo" />
+      <Nav />
     </header>
   );
 }

@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
 
-function BookingForm() {
-  // 1. State-Variablen für jedes Formularfeld definieren
+function BookingForm({ availableTimes, dispatch }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('17:00');
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
 
-  // 2. Verfügbare Uhrzeiten als State-Array
-  const [availableTimes, setAvailableTimes] = useState([
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00'
-  ]);
+  // Step 2: Event-Handler für Datumsänderung inkl. Dispatch
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setDate(selectedDate);
+    // Dispatch ausführen, um verfügbare Zeiten anzupassen
+    dispatch({ type: 'UPDATE_TIMES', date: selectedDate });
+  };
 
-  // Handler für das Absenden des Formulars
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Reservation Submitted:', { date, time, guests, occasion });
     alert(`Reservation confirmed for ${guests} guests on ${date} at ${time}!`);
   };
 
@@ -31,7 +26,7 @@ function BookingForm() {
         type="date"
         id="res-date"
         value={date}
-        onChange={(e) => setDate(e.target.value)}
+        onChange={handleDateChange}
         required
       />
 

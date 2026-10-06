@@ -6,7 +6,6 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
 
-  // React Client-Side Validierung prüfen
   const isFormValid = () => {
     return date !== '' && guests >= 1 && guests <= 10 && time !== '';
   };
@@ -31,7 +30,12 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'grid', maxWidth: '300px', gap: '20px' }}>
+    <form 
+      onSubmit={handleSubmit} 
+      style={{ display: 'grid', maxWidth: '300px', gap: '20px' }}
+      aria-label="Table reservation form"
+    >
+      {/* Step 3: Label mit htmlFor verknüpft mit id des Inputs */}
       <label htmlFor="res-date">Choose date</label>
       <input
         type="date"
@@ -82,6 +86,7 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
         <option value="Anniversary">Anniversary</option>
       </select>
 
+      {/* Step 2: Gefordertes aria-label="On Click" auf dem Submit-Button */}
       <input
         type="submit"
         value="Make Your reservation"

@@ -14,7 +14,7 @@
   --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Global Reset */
+/* Global Reset (Korrektur: * statt -) */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -40,9 +40,10 @@ h1 {
   color: var(--primary-yellow);
 }
 
+/* Korrektur: h2 standardmäßig dunkelgrün für weißen Hintergrund */
 h2 {
   font-size: 2.5rem;
-  color: var(--light-gray);
+  color: var(--primary-green);
 }
 
 h3 {
@@ -129,6 +130,11 @@ nav a:focus {
   margin-bottom: 40px;
 }
 
+/* h2 innerhalb der Hero-Section bleibt weiß/hell */
+.hero h2 {
+  color: var(--light-gray);
+}
+
 .hero p {
   color: var(--light-gray);
   max-width: 400px;
@@ -148,8 +154,20 @@ nav a:focus {
   transition: background-color 0.2s ease-in-out;
 }
 
-.button-primary:hover {
+.button-primary:hover:not(:disabled) {
   background-color: #e3be10;
+}
+
+/* Disabled state for primary button */
+.button-primary:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.button-primary:disabled:hover {
+  background-color: #cccccc;
 }
 
 /* Footer */
@@ -164,7 +182,7 @@ footer {
   color: #666;
 }
 
-/* Step 1 & 6: Responsive Design */
+/* Responsive Design */
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -188,6 +206,11 @@ footer {
 
   h1 {
     font-size: 2.8rem;
+  }
+
+  .specials-grid,
+  .testimonials-grid {
+    flex-direction: column;
   }
 
   footer {
@@ -255,20 +278,34 @@ footer {
   margin: 40px 0;
 }
 
-/* Booking Page Placeholder */
+/* Booking Page & Form Styling */
 .booking-page {
   padding: 40px 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Disabled state for primary button */
-.button-primary:disabled {
-  background-color: #cccccc;
-  color: #666666;
-  cursor: not-allowed;
-  opacity: 0.6;
+form {
+  background-color: var(--light-gray);
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 400px;
 }
 
-.button-primary:disabled:hover {
-  background-color: #cccccc;
+form label {
+  color: var(--primary-green);
+  font-weight: 700;
+}
+
+form input[type="date"],
+form input[type="number"],
+form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
 }

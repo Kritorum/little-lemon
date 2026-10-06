@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
 
-function BookingForm({ availableTimes, dispatch }) {
+function BookingForm({ availableTimes, dispatch, submitForm }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('17:00');
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
 
-  // Step 2: Event-Handler für Datumsänderung inkl. Dispatch
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
     setDate(selectedDate);
-    // Dispatch ausführen, um verfügbare Zeiten anzupassen
     dispatch({ type: 'UPDATE_TIMES', date: selectedDate });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Reservation confirmed for ${guests} guests on ${date} at ${time}!`);
+    const formData = {
+      date,
+      time,
+      guests,
+      occasion,
+    };
+    submitForm(formData);
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'grid', maxWidth: '200px', gap: '20px' }}>
+    <form onSubmit={handleSubmit} style={{ display: 'grid', maxWidth: '300px', gap: '20px' }}>
       <label htmlFor="res-date">Choose date</label>
       <input
         type="date"

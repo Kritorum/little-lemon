@@ -6,6 +6,11 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
 
+  // React Client-Side Validierung prüfen
+  const isFormValid = () => {
+    return date !== '' && guests >= 1 && guests <= 10 && time !== '';
+  };
+
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
     setDate(selectedDate);
@@ -14,6 +19,8 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isFormValid()) return;
+
     const formData = {
       date,
       time,
@@ -32,6 +39,7 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
         value={date}
         onChange={handleDateChange}
         required
+        aria-label="Choose date"
       />
 
       <label htmlFor="res-time">Choose time</label>
@@ -39,6 +47,8 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
         id="res-time"
         value={time}
         onChange={(e) => setTime(e.target.value)}
+        required
+        aria-label="Choose time"
       >
         {availableTimes.map((availableTime) => (
           <option key={availableTime} value={availableTime}>
@@ -55,8 +65,9 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
         max="10"
         id="guests"
         value={guests}
-        onChange={(e) => setGuests(e.target.value)}
+        onChange={(e) => setGuests(Number(e.target.value))}
         required
+        aria-label="Number of guests"
       />
 
       <label htmlFor="occasion">Occasion</label>
@@ -64,12 +75,20 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
         id="occasion"
         value={occasion}
         onChange={(e) => setOccasion(e.target.value)}
+        required
+        aria-label="Occasion"
       >
         <option value="Birthday">Birthday</option>
         <option value="Anniversary">Anniversary</option>
       </select>
 
-      <input type="submit" value="Make Your reservation" className="button-primary" />
+      <input
+        type="submit"
+        value="Make Your reservation"
+        className="button-primary"
+        disabled={!isFormValid()}
+        aria-label="On Click"
+      />
     </form>
   );
 }

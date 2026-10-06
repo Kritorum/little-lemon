@@ -1,4 +1,20 @@
-/* Global Reset & Typography */
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700;800&family=Markazi+Text:wght@400;500;600;700&display=swap');
+
+/* CSS Variables */
+:root {
+  --primary-green: #495E57;
+  --primary-yellow: #F4CE14;
+  --secondary-peach: #EE9972;
+  --secondary-sand: #FBDABB;
+  --light-gray: #EDEFEE;
+  --dark-gray: #333333;
+  --white: #ffffff;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Global Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,11 +22,45 @@
 }
 
 body {
-  font-family: 'Markazi Text', Arial, sans-serif;
-  color: #333333;
+  font-family: 'Karla', sans-serif;
+  color: var(--dark-gray);
+  background-color: var(--white);
+  line-height: 1.5;
 }
 
-/* Base Grid Layout for Desktop */
+/* Step 2: Headings, Paragraphs & Spans */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Markazi Text', serif;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: 3.5rem;
+  color: var(--primary-yellow);
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: var(--light-gray);
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-gray);
+}
+
+p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+span {
+  font-weight: 700;
+}
+
+/* Layout Grid */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -20,7 +70,7 @@ body {
   padding: 0 20px;
 }
 
-/* Header & Nav Layout */
+/* Header */
 header {
   grid-column: span 12;
   display: flex;
@@ -29,56 +79,115 @@ header {
   padding: 20px 0;
 }
 
-.logo {
-  height: 50px;
-  width: auto;
+/* Step 4: Image Styling */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  object-fit: cover;
 }
 
+.logo {
+  height: 55px;
+  width: auto;
+  border-radius: 0;
+}
+
+/* Step 3: Navigation Elements */
 nav ul {
   display: flex;
   list-style: none;
-  gap: 20px;
+  gap: 24px;
+  align-items: center;
 }
 
 nav a {
   text-decoration: none;
-  color: #495E57;
-  font-weight: bold;
+  color: var(--primary-green);
+  font-weight: 800;
   font-size: 1.1rem;
+  transition: color 0.2s ease-in-out;
 }
 
-nav a:hover {
-  color: #F4CE14;
+nav a:hover,
+nav a:focus {
+  color: var(--primary-yellow);
 }
 
-/* Main Content Area */
-main {
+/* Hero Section */
+.hero {
   grid-column: span 12;
-  min-height: 400px;
+  background-color: var(--primary-green);
+  color: var(--white);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 40px;
 }
 
-/* Footer Layout */
+.hero p {
+  color: var(--light-gray);
+  max-width: 400px;
+}
+
+/* Primary Button Style */
+.button-primary {
+  display: inline-block;
+  background-color: var(--primary-yellow);
+  color: var(--dark-gray);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button-primary:hover {
+  background-color: #e3be10;
+}
+
+/* Footer */
 footer {
   grid-column: span 12;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 30px 0;
-  border-top: 1px solid #cccccc;
+  border-top: 2px solid var(--light-gray);
   margin-top: 40px;
+  color: #666;
 }
 
-/* Responsive Styles for Tablet & Mobile */
+/* Step 1 & 6: Responsive Design */
 @media (max-width: 768px) {
   header {
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
   }
 
   nav ul {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px 15px;
+    gap: 12px 20px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero p {
+    margin: 0 auto 20px auto;
+  }
+
+  h1 {
+    font-size: 2.8rem;
   }
 
   footer {

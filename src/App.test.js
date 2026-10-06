@@ -1,8 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import BookingForm from './components/BookingForm';
 import { initializeTimes, updateTimes } from './bookingAPI';
 
-// Globales Mocking für fetchAPI einrichten
 beforeEach(() => {
   global.fetchAPI = jest.fn((date) => ['17:00', '18:00', '19:00', '20:00', '21:00']);
 });
@@ -11,7 +10,8 @@ afterEach(() => {
   delete global.fetchAPI;
 });
 
-test('Renders the BookingForm label', () => {
+// --- STEP 1: HTML5 Validation Attribute Tests ---
+test('Renders HTML5 validation attributes on inputs correctly', () => {
   const mockAvailableTimes = ['17:00', '18:00'];
   const mockDispatch = jest.fn();
   const mockSubmitForm = jest.fn();
@@ -20,24 +20,75 @@ test('Renders the BookingForm label', () => {
     <BookingForm 
       availableTimes={mockAvailableTimes} 
       dispatch={mockDispatch} 
-      submitForm={mockSubmitForm}
+      submitForm={mockSubmitForm} 
     />
   );
 
-  const labelElement = screen.getByText("Choose date");
-  expect(labelElement).toBeInTheDocument();
+  // Date Field Attributes
+  const dateInput = screen.getByLabelText(/Choose date/i);
+  expect(dateInput).toHaveAttribute('type', 'date');
+  expect(dateInput).toHaveAttribute('required');
+
+  // Guests Field Attributes
+  const guestsInput = screen.getByLabelText(/Number of guests/i);
+  expect(guestsInput).toHaveAttribute('type', 'number');
+  expect(guestsInput).toHaveAttribute('min', '1');
+  expect(guestsInput).toHaveAttribute('max', '10');
+  expect(guestsInput).toHaveAttribute('required');
+
+  // Occasion Field Attributes
+  const occasionSelect = screen.getByLabelText(/Occasion/i);
+  expect(occasionSelect).toHaveAttribute('required');
 });
 
-// Step 1: Aktualisierter Test für initializeTimes mit fetchAPI
+// --- STEP 2: JavaScript / React Validation State Tests ---
+test('Submit button is disabled when form is invalid (date is empty)', () => {
+  const mockAvailableTimes = ['17:00', '18:00'];
+  const mockDispatch = jest.fn();
+  const mockSubmitForm = jest.fn();
+
+  render(
+    <BookingForm 
+      availableTimes={mockAvailableTimes} 
+      dispatch={mockDispatch} 
+      submitForm={mockSubmitForm} 
+    />
+  );
+
+  const submitButton = screen.getByRole('button', { name: /On Click|Make Your reservation/i });
+  expect(submitButton).toBeDisabled();
+});
+
+test('Submit button is enabled when form input fields are valid', () => {
+  const mockAvailableTimes = ['17:00', '18:00'];
+  const mockDispatch = jest.fn();
+  const mockSubmitForm = jest.fn();
+
+  render(
+    <BookingForm 
+      availableTimes={mockAvailableTimes} 
+      dispatch={mockDispatch} 
+      submitForm={mockSubmitForm} 
+    />
+  );
+
+  const dateInput = screen.getByLabelText(/Choose date/i);
+  const submitButton = screen.getByRole('button', { name: /On Click|Make Your reservation/i });
+
+  // Gültiges Datum eingeben
+  fireEvent.change(dateInput, { target: { value: '2026-10-15' } });
+
+  expect(submitButton).not.toBeDisabled();
+});
+
+// --- API Reducer Tests ---
 test('initializeTimes calls fetchAPI and returns non-empty array of available times', () => {
   const times = initializeTimes();
-  
   expect(global.fetchAPI).toHaveBeenCalled();
   expect(Array.isArray(times)).toBe(true);
   expect(times.length).toBeGreaterThan(0);
 });
 
-// Step 2: Aktualisierter Test für updateTimes mit ausgewähltem Datum im dispatch
 test('updateTimes calls fetchAPI with selected date and updates available times', () => {
   const currentState = ['17:00', '18:00'];
   const selectedDate = '2026-10-10';
